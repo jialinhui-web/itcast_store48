@@ -8,9 +8,15 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 import '@/assets/css/index.css';
+import moment from 'moment';
 
 // 注册插件
 Vue.use(ElementUI);
+
+// 全局过滤器，格式化日期
+Vue.filter('fmtDate', (value, fmtString) => {
+  return moment(value).format(fmtString);
+});
 
 Vue.config.productionTip = false;
 
