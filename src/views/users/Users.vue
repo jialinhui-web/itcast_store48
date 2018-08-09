@@ -107,7 +107,6 @@ export default {
   methods: {
     // 1 发送请求，获取用户列表
     async loadData() {
-
       // 发送请求的时候，要在请求头中添加Authorization=token
       var token = sessionStorage.getItem('token');
       axios.defaults.headers.common['Authorization'] = token;

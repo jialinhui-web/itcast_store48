@@ -24,6 +24,6 @@ export default new Router({
       children: [
         { name: 'users', path: '/users', component: Users }
       ]
-    },
+    }
   ]
 });

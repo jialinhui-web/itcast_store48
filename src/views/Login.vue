@@ -11,7 +11,7 @@
       </el-form-item>
       <el-form-item label="密码">
         <!-- 组件，vue有自己的事件机制，用的是vue事件机制实现的keyup事件 -->
-        <!-- 想使用DOM中的keyup事件 
+        <!-- 想使用DOM中的keyup事件
         native是告诉组件，我要使用原生DOM事件 -->
         <el-input @keyup.enter.native="handleLogin" type="password" v-model="formData.password"></el-input>
       </el-form-item>
