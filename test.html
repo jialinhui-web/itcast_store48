@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 1 数组的解构
+    // var arr = ['a11', 'b22', 'd33', 'e44'];
+    // var [a, b, ...c] = arr;
+    // console.log(a, b, c);
+
+    // 2 对象的解构
+    var response = {
+      data: {
+        data: {
+          token: '123'
+        },
+        meta: {
+          msg: 'ok',
+          status: 200
+        }
+      },
+      status: 200,
+      header: {}
+    };
+
+    // var { data, status } = response;
+    // console.log(data, status);
+
+    // var { data: resData, status } = response;
+    // console.log(resData);
+
+    var { data: { data: { token }, meta: { msg, status } } } = response;
+    console.log(token, msg, status);
+  </script>
+</body>
+</html>
