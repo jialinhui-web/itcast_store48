@@ -51,6 +51,7 @@ export default {
         var token = response.data.data.token;
         sessionStorage.setItem('token', token);
         // 跳转到后台首页
+        this.$router.push('/');
       } else {
         // 登录失败
         this.$message.error(msg);

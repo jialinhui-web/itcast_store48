@@ -102,6 +102,16 @@
 
 <script>
 export default {
+  beforeCreate() {
+    // 判断是否登录，token
+    var token = sessionStorage.getItem('token');
+    if (!token) {
+      // 提示
+      this.$message.warning('请先登录');
+      // 没有token，跳转到登录页面
+      this.$router.push('/login');
+    }
+  }
 };
 </script>
 
