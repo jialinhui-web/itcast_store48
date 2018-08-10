@@ -123,6 +123,7 @@
       title="添加用户"
       :visible="addUserDialogFormVisible">
       <el-form
+        ref="addForm"
         :rules="rules"
         label-width="80px"
         :model="form">
@@ -228,22 +229,29 @@ export default {
     },
     // handleAdd 添加用户
     async handleAdd() {
-      const response = await this.$http.post('users', this.form);
-
-      // 判断添加是否成功
-      const { data: { meta: { status, msg } } } = response;
-      if (status === 201) {
-        // 添加成功
-        // 提示
-        this.$message.success(msg);
-        // 关闭对话框
-        this.addUserDialogFormVisible = false;
-        // 重新加载数据
-        this.loadData();
-      } else {
-        // 添加失败
-        this.$message.error(msg);
-      }
+      // 表单验证
+      this.$refs.addForm.validate(async (valid) => {
+        // valid 是否验证成功
+        if (valid) {
+          const response = await this.$http.post('users', this.form);
+          // 判断添加是否成功
+          const { data: { meta: { status, msg } } } = response;
+          if (status === 201) {
+            // 添加成功
+            // 提示
+            this.$message.success(msg);
+            // 关闭对话框
+            this.addUserDialogFormVisible = false;
+            // 重新加载数据
+            this.loadData();
+          } else {
+            // 添加失败
+            this.$message.error(msg);
+          }
+        } else {
+          this.$message.warning('表单验证失败');
+        }
+      });
     }
   }
 };
