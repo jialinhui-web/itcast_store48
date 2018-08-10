@@ -140,7 +140,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="addUserDialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addUserDialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="handleAdd">确 定</el-button>
       </div>
     </el-dialog>
   </el-card>
@@ -213,6 +213,25 @@ export default {
     handleSearch() {
       // this.searchValue
       this.loadData();
+    },
+    // handleAdd 添加用户
+    async handleAdd() {
+      const response = await this.$http.post('users', this.form);
+
+      // 判断添加是否成功
+      const { data: { meta: { status, msg } } } = response;
+      if (status === 201) {
+        // 添加成功
+        // 提示
+        this.$message.success(msg);
+        // 关闭对话框
+        this.addUserDialogFormVisible = false;
+        // 重新加载数据
+        this.loadData();
+      } else {
+        // 添加失败
+        this.$message.error(msg);
+      }
     }
   }
 };
