@@ -9,10 +9,17 @@
     <!-- 搜索 -->
     <el-row class="searchRow">
       <el-col :span="24">
-        <el-input placeholder="请输入内容" class="searchInput">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-input
+          v-model="searchValue"
+          clearable
+          placeholder="请输入内容"
+          class="searchInput">
+          <el-button
+            @click="handleSearch"
+            slot="append"
+            icon="el-icon-search"></el-button>
         </el-input>
-        <el-button type="success" plain>成功按钮</el-button>
+        <el-button @click="addUserDialogFormVisible = true" type="success" plain>添加</el-button>
       </el-col>
     </el-row>
     <!-- 表格 -->
@@ -110,6 +117,32 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="count">
     </el-pagination>
+
+    <!-- 添加用户的对话框 -->
+    <el-dialog
+      title="添加用户"
+      :visible="addUserDialogFormVisible">
+      <el-form
+        label-width="80px"
+        :model="form">
+        <el-form-item label="用户名">
+          <el-input v-model="form.username" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="form.email" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="电话">
+          <el-input v-model="form.mobile" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addUserDialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addUserDialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -122,9 +155,20 @@ export default {
       // 页码
       pagenum: 1,
       // 每页显示多少条数据
-      pagesize: 2,
+      pagesize: 4,
       // 总共多少条数据
-      count: 0
+      count: 0,
+      // 绑定搜索文本框
+      searchValue: '',
+      // 控制添加用户的对话框的显示隐藏
+      addUserDialogFormVisible: false,
+      // 表单数据
+      form: {
+        username: '',
+        password: '',
+        email: '',
+        mobile: ''
+      }
     };
   },
   created() {
@@ -137,7 +181,7 @@ export default {
       var token = sessionStorage.getItem('token');
       this.$http.defaults.headers.common['Authorization'] = token;
 
-      var response = await this.$http.get(`users?pagenum=${this.pagenum}&pagesize=${this.pagesize}`);
+      var response = await this.$http.get(`users?pagenum=${this.pagenum}&pagesize=${this.pagesize}&query=${this.searchValue}`);
 
       // Vue.prototype.$http = axios; 在main.js中
       // this.$http.get()
@@ -164,6 +208,11 @@ export default {
       this.pagenum = val;
       this.loadData();
       console.log(`当前页: ${val}`);
+    },
+    // 搜索的方法
+    handleSearch() {
+      // this.searchValue
+      this.loadData();
     }
   }
 };
