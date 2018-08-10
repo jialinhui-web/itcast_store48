@@ -290,10 +290,40 @@ export default {
       this.form.username = user.username;
       this.form.mobile = user.mobile;
       this.form.email = user.email;
+      // 存储用户的id
+      this.form.id = user.id;
     },
-    // 点击编辑窗口的确定按钮
-    handleEdit () {
+    // 点击编辑窗口的确定按钮，修改数据
+    async handleEdit() {
+      const response = await this.$http.put(`users/${this.form.id}`, {
+        email: this.form.email,
+        mobile: this.form.mobile
+      });
 
+      // 判断是否成功
+      // response -> { data: { data: {} , meta: { status: 200, msg: '' } } }
+      const { meta: { status, msg } } = response.data;
+      if (status === 200) {
+        // 修改成功
+        // 提示
+        this.$message.success(msg);
+        // 关闭窗口
+        this.editUserDialogFormVisible = false;
+        // 重置表单
+        // this.$refs.editForm.resetFields();
+        // 重新加载数据
+        this.loadData();
+        // 清空表单
+        // this.form = {};
+        
+        for (var key in this.form) {
+          this.form[key] = '';
+        }
+
+      } else {
+        // 修改失败
+        this.$message.error(msg);
+      }
     }
   }
 };
