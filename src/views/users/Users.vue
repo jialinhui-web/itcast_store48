@@ -77,6 +77,7 @@
           <!-- scope.row 是当前行绑定的数据对象 -->
           <!-- {{ scope.$index }} -->
           <el-button
+            @click="editUserDialogFormVisible = true"
             type="primary"
             icon="el-icon-edit"
             size="mini"
@@ -145,6 +146,30 @@
         <el-button type="primary" @click="handleAdd">确 定</el-button>
       </div>
     </el-dialog>
+
+    <!-- 编辑用户的对话框 -->
+    <el-dialog
+      title="修改用户"
+      :visible.sync="editUserDialogFormVisible">
+      <el-form
+        ref="editForm"
+        label-width="80px"
+        :model="form">
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="form.username" readonly auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="form.email" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="电话">
+          <el-input v-model="form.mobile" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="editUserDialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleEdit">确 定</el-button>
+      </div>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -181,7 +206,9 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 3, max: 11, message: '长度在 3 到 11 个字符', trigger: 'blur' }
         ]
-      }
+      },
+      // 控制编辑用户的对话框的显示隐藏
+      editUserDialogFormVisible: false
     };
   },
   created() {
@@ -254,6 +281,10 @@ export default {
           this.$message.warning('表单验证失败');
         }
       });
+    },
+    // 点击编辑窗口的确定按钮
+    handleEdit () {
+
     }
   }
 };
