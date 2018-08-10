@@ -121,7 +121,7 @@
     <!-- 添加用户的对话框 -->
     <el-dialog
       title="添加用户"
-      :visible="addUserDialogFormVisible">
+      :visible.sync="addUserDialogFormVisible">
       <el-form
         ref="addForm"
         :rules="rules"
@@ -244,6 +244,8 @@ export default {
             this.addUserDialogFormVisible = false;
             // 重新加载数据
             this.loadData();
+            // 还原表达的默认值
+            this.$refs.addForm.resetFields();
           } else {
             // 添加失败
             this.$message.error(msg);
