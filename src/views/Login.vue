@@ -23,9 +23,6 @@
 </template>
 
 <script>
-// 导入axios模块
-import axios from 'axios';
-
 export default {
   data() {
     return {
@@ -38,7 +35,7 @@ export default {
   methods: {
     // 处理登录
     async handleLogin() {
-      var response = await axios.post('http://localhost:8888/api/private/v1/login', this.formData);
+      var response = await this.$http.post('http://localhost:8888/api/private/v1/login', this.formData);
 
       // var status = response.data.meta.status;
       // var msg = response.data.meta.msg;

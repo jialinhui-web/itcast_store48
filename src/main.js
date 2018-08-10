@@ -9,6 +9,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 import '@/assets/css/index.css';
 import moment from 'moment';
+import axios from 'axios';
 
 // 注册插件
 Vue.use(ElementUI);
@@ -17,6 +18,9 @@ Vue.use(ElementUI);
 Vue.filter('fmtDate', (value, fmtString) => {
   return moment(value).format(fmtString);
 });
+
+// 配置全局的axios
+Vue.prototype.$http = axios;
 
 Vue.config.productionTip = false;
 
