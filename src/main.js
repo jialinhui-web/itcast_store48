@@ -9,19 +9,18 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 import '@/assets/css/index.css';
 import moment from 'moment';
-import axios from 'axios';
+import myaxios from '@/plugins/MyAxios';
 
 // 注册插件
 Vue.use(ElementUI);
+// console.log(myaxios);
+// 注册MyAxios的插件
+Vue.use(myaxios);
 
 // 全局过滤器，格式化日期
 Vue.filter('fmtDate', (value, fmtString) => {
   return moment(value).format(fmtString);
 });
-
-// 配置全局的axios
-axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/';
-Vue.prototype.$http = axios;
 
 Vue.config.productionTip = false;
 
