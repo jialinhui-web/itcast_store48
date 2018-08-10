@@ -65,6 +65,7 @@
         <template slot-scope="scope">
           <!-- {{ scope.row.mg_state }} -->
           <el-switch
+            @change="handleChange(scope.row)"
             v-model="scope.row.mg_state"
             active-color="#13ce66"
             inactive-color="#ff4949">
@@ -352,7 +353,9 @@ export default {
           const { meta: { status, msg } } = response.data;
           if (status === 200) {
 
+            // 判断当前页是否只有一条数据，并且当前不是第一页
             if (this.data.length === 1 && this.pagenum !== 1) {
+              // 如果当前页只有一条数据，删除之后，要让pagenum--
               this.pagenum--;
               // 重新加载数据
               this.loadData();
@@ -370,6 +373,17 @@ export default {
             message: '已取消删除'
           });          
         });
+    },
+    // 当用户状态改变的时候，修改用户的状态
+    async handleChange(user) {
+      const response = await this.$http.put(`users/${user.id}/state/${user.mg_state}`);
+
+      const { meta: { status, msg } } = response.data;
+      if (status === 200) {
+        this.$message.success(msg);
+      } else {
+        this.$message.error(msg);
+      }
     }
   }
 };
