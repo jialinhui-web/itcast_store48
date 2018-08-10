@@ -149,6 +149,7 @@
 
     <!-- 编辑用户的对话框 -->
     <el-dialog
+      @close="handleEditDialogClose"
       title="修改用户"
       :visible.sync="editUserDialogFormVisible">
       <el-form
@@ -323,6 +324,15 @@ export default {
       } else {
         // 修改失败
         this.$message.error(msg);
+      }
+    },
+    // 关闭编辑对话框的时候执行
+    handleEditDialogClose() {
+      console.log('123');
+      // this.editUserDialogFormVisible = false;
+      // 清空表单数据
+      for (var key in this.form) {
+        this.form[key] = '';
       }
     }
   }
