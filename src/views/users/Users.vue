@@ -77,7 +77,7 @@
           <!-- scope.row 是当前行绑定的数据对象 -->
           <!-- {{ scope.$index }} -->
           <el-button
-            @click="editUserDialogFormVisible = true"
+            @click="openEditDialog(scope.row)"
             type="primary"
             icon="el-icon-edit"
             size="mini"
@@ -281,6 +281,15 @@ export default {
           this.$message.warning('表单验证失败');
         }
       });
+    },
+    // 点击编辑按钮
+    openEditDialog(user) {
+      // 显示对话框
+      this.editUserDialogFormVisible = true;
+      // console.log(user);
+      this.form.username = user.username;
+      this.form.mobile = user.mobile;
+      this.form.email = user.email;
     },
     // 点击编辑窗口的确定按钮
     handleEdit () {
