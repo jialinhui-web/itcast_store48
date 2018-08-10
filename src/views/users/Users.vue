@@ -84,6 +84,7 @@
             plain>
           </el-button>
           <el-button
+            @click="handleDelete(scope.row.id)"
             type="danger"
             icon="el-icon-delete"
             size="mini"
@@ -334,6 +335,27 @@ export default {
       for (var key in this.form) {
         this.form[key] = '';
       }
+    },
+    // 点击删除按钮
+    handleDelete(id) {
+      // 删除提示
+      this.$confirm('是否删除该用户?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 点击确定按钮执行
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          // 点击取消按钮执行
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
     }
   }
 };
