@@ -179,6 +179,7 @@
 export default {
   data() {
     return {
+      // 用户列表
       data: [],
       // 分页相关数据
       // 页码
@@ -337,18 +338,31 @@ export default {
       }
     },
     // 点击删除按钮
-    handleDelete(id) {
+    async handleDelete(id) {
       // 删除提示
       this.$confirm('是否删除该用户?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
+        }).then(async () => {
           // 点击确定按钮执行
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
+          const response = await this.$http.delete(`users/${id}`);
+
+          // 判断删除是否成功
+          const { meta: { status, msg } } = response.data;
+          if (status === 200) {
+
+            if (this.data.length === 1 && this.pagenum !== 1) {
+              this.pagenum--;
+              // 重新加载数据
+              this.loadData();
+            }
+            // 提示
+            this.$message.success(msg);
+            
+          } else {
+            this.$message.error(msg);
+          }
         }).catch(() => {
           // 点击取消按钮执行
           this.$message({
