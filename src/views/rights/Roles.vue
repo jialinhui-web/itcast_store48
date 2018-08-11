@@ -111,6 +111,7 @@
       title="分配权限"
       :visible.sync="setRightsDialogVisible">
       <el-tree
+        ref="tree"
         :data="treeData"
         :props="defaultProps"
         node-key="id"
@@ -120,7 +121,7 @@
       </el-tree>
       <span slot="footer" class="dialog-footer">
         <el-button @click="setRightsDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="setRightsDialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="handleSetRights">确 定</el-button>
       </span>
     </el-dialog>
   </el-card>
@@ -143,7 +144,9 @@ export default {
         children: 'children'
       },
       // 树默认选中的节点的key
-      checkedList: []
+      checkedList: [],
+      // 点击分配权限按钮的时候，记录当前要分配的角色id
+      currentRoleId: -1
     };
   },
   created() {
@@ -190,6 +193,8 @@ export default {
     },
     // 点击分配权限的按钮，打开分配权限的对话框 
     async handleOpenSetRightsDialog(role) {
+      // 记录roleId
+      this.currentRoleId = role.id;
       // 清空数组
       this.checkedList = [];
 
@@ -207,6 +212,35 @@ export default {
           });
         })
       });
+    },
+    // 点击确定按钮，分配权限
+    async handleSetRights() {
+      // currentRoleId 角色id  -- 点击分配权限按钮记录
+      // rids  权限id的列表
+      // 全选的节点的id (3,5,6,7)
+      const checkedList = this.$refs.tree.getCheckedKeys();
+      // 半选的节点的id
+      const halfCheckedList = this.$refs.tree.getHalfCheckedKeys();
+
+      // const arr = checkedList.concat(halfCheckedList);
+      // console.log(arr);
+      const arr = [...checkedList, ...halfCheckedList];
+
+      // 发送请求
+      const response = await this.$http.post(`roles/${this.currentRoleId}/rights`, {
+        rids: arr.join(',')
+      });
+
+      // 判断是否成功
+      const { meta: { status, msg } } = response.data;
+      if (status === 200) {
+        this.$message.success(msg);
+        this.setRightsDialogVisible = false;
+        // 重新加载数据
+        this.loadData();
+      } else {
+        this.$message.error(msg);
+      }
     }
   }
 };
