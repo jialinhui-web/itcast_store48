@@ -10,12 +10,17 @@ import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/css/index.css';
 import moment from 'moment';
 import myaxios from '@/plugins/MyAxios';
+// 导入面包屑组件
+import MyBreadcrumb from '@/components/MyBreadcrumb';
 
 // 注册插件
 Vue.use(ElementUI);
 // console.log(myaxios);
 // 注册MyAxios的插件
 Vue.use(myaxios);
+
+// 注册面包屑 全局组件
+Vue.component(MyBreadcrumb.name, MyBreadcrumb);
 
 // 全局过滤器，格式化日期
 Vue.filter('fmtDate', (value, fmtString) => {
