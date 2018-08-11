@@ -4,6 +4,7 @@ import Router from 'vue-router';
 import Login from '@/views/Login';
 import Home from '@/views/Home';
 import Users from '@/views/users/Users';
+import Rights from '@/views/rights/Rights';
 
 // @ 代表的是src的绝对路径
 // @ 是在build/webpack.base.conf.js
@@ -22,7 +23,8 @@ export default new Router({
       path: '/',
       component: Home,
       children: [
-        { name: 'users', path: '/users', component: Users }
+        { name: 'users', path: '/users', component: Users },
+        { name: 'rights', path: '/rights', component: Rights }
       ]
     }
   ]
