@@ -10,6 +10,7 @@
     </el-row>
     <!-- 表格 -->
     <el-table
+      v-loading="loading"
       stripe
       border
       :data="data"
@@ -60,7 +61,8 @@
 export default {
   data() {
     return {
-      data: []
+      data: [],
+      loading: true
     };
   },
   created() {
@@ -70,6 +72,9 @@ export default {
   methods: {
     async loadData() {
       const response = await this.$http.get('roles');
+
+      // 等请求结束，关闭loading
+      this.loading = false;
 
       const { meta: { status, msg } } = response.data;
       if (status === 200) {

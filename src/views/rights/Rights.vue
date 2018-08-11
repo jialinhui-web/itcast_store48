@@ -10,6 +10,7 @@
     </el-breadcrumb> -->
     <!-- 表格 -->
     <el-table
+      v-loading="loading"
       :data="data"
       border
       stripe
@@ -45,7 +46,8 @@
 export default {
   data() {
     return {
-      data: []
+      data: [],
+      loading: true
     };
   },
   created() {
@@ -55,6 +57,9 @@ export default {
   methods: {
     async loadData() {
       const response = await this.$http.get('rights/list');
+
+      // 请求结束
+      this.loading = false;
 
       const { meta: { status, msg } } = response.data;
       if (status === 200) {
