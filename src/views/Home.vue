@@ -29,8 +29,7 @@
         <el-menu
           unique-opened
           router
-          style="height: 100%"
-          default-active="/users">
+          style="height: 100%">
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-location"></i>
