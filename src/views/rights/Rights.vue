@@ -28,8 +28,12 @@
         width="180">
       </el-table-column>
       <el-table-column
-        prop="level"
         label="层级">
+        <template slot-scope="scope">
+          <span v-if="scope.row.level === '0'">一级</span>
+          <span v-else-if="scope.row.level === '1'">二级</span>
+          <span v-else-if="scope.row.level === '2'">三级</span>
+        </template>
       </el-table-column>
     </el-table>
   </el-card>
@@ -41,6 +45,22 @@ export default {
     return {
       data: []
     };
+  },
+  created() {
+    // 组件创建完毕，发送请求获取数据
+    this.loadData();
+  },
+  methods: {
+    async loadData() {
+      const response = await this.$http.get('rights/list');
+
+      const { meta: { status, msg } } = response.data;
+      if (status === 200) {
+        this.data = response.data.data;
+      } else {
+        this.$message.error(msg);
+      }
+    }
   }
 };
 </script>
@@ -48,5 +68,6 @@ export default {
 <style>
 .card {
   height: 100%;
+  overflow: auto;
 }
 </style>
