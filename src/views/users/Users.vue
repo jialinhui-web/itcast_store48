@@ -393,9 +393,9 @@ export default {
           if (this.data.length === 1 && this.pagenum !== 1) {
             // 如果当前页只有一条数据，删除之后，要让pagenum--
             this.pagenum--;
-            // 重新加载数据
-            this.loadData();
           }
+          // 重新加载数据
+          this.loadData();
           // 提示
           this.$message.success(msg);
         } else {
@@ -432,6 +432,9 @@ export default {
       this.roles = response.data.data;
 
       // 角色id怎么办？？
+      const userResponse = await this.$http.get(`users/${user.id}`);
+      this.currentRoleId = userResponse.data.data.rid;
+      // console.log(userResponse);
     }
   }
 };
