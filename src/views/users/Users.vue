@@ -198,7 +198,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="setRoleDialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="setRoleDialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="handleSetRole">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -435,6 +435,21 @@ export default {
       const userResponse = await this.$http.get(`users/${user.id}`);
       this.currentRoleId = userResponse.data.data.rid;
       // console.log(userResponse);
+    },
+    // 实现分配角色
+    async handleSetRole() {
+      const response = await this.$http.put(`users/${this.currentUserId}/role`, {
+        rid: this.currentRoleId 
+      });
+
+      // 判断成功还是失败
+      const { meta: { status, msg } } = response.data;
+      if (status === 200) {
+        this.$message.success(msg);
+        this.setRoleDialogFormVisible = false;
+      } else {
+        this.$message.error(msg);
+      }
     }
   }
 };
