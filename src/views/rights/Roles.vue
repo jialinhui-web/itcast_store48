@@ -1,17 +1,93 @@
 <template>
   <el-card class="card">
+    <!-- 面包屑组件 -->
     <my-breadcrumb level1="权限管理" level2="角色列表"></my-breadcrumb>
+    <!-- 添加按钮 -->
+    <el-row class="add-row">
+      <el-col :span="24">
+        <el-button>添加角色</el-button>
+      </el-col>
+    </el-row>
+    <!-- 表格 -->
+    <el-table
+      stripe
+      border
+      :data="data"
+      style="width: 100%">
+      <!-- 索引列 -->
+      <el-table-column
+        type="index"
+        width="50">
+      </el-table-column>
+      <el-table-column
+        prop="roleName"
+        label="角色名称"
+        width="220">
+      </el-table-column>
+      <el-table-column
+        prop="roleDesc"
+        label="角色描述"
+        width="220">
+      </el-table-column>
+      <el-table-column
+        label="操作">
+        <template slot-scope="scope">
+          <el-button
+            type="primary"
+            icon="el-icon-edit"
+            size="mini"
+            plain>
+          </el-button>
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            size="mini"
+            plain>
+          </el-button>
+          <el-button
+            type="success"
+            icon="el-icon-check"
+            size="mini"
+            plain>
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </el-card>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      data: []
+    };
+  },
+  created() {
+    // 组件创建完毕，发送请求，获取数据
+    this.loadData();
+  },
+  methods: {
+    async loadData() {
+      const response = await this.$http.get('roles');
 
+      const { meta: { status, msg } } = response.data;
+      if (status === 200) {
+        this.data = response.data.data;
+      } else {
+        this.$message.error(msg);
+      }
+    }
+  }
 };
 </script>
 
 <style>
 .card {
   height: 100%;
+}
+.add-row {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 </style>
