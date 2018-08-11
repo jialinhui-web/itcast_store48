@@ -26,7 +26,7 @@
             <el-col :span="4">
               <!-- 显示一级权限的名称 -->
               <el-tag
-                @close="handleClose(scope.row.id, level1.id)"
+                @close="handleClose(scope.row, level1.id)"
                 closable>
                 {{ level1.authName }}
               </el-tag>
@@ -39,7 +39,7 @@
                 <el-col :span="4">
                   <!-- 显示二级权限的名称 -->
                   <el-tag
-                    @close="handleClose(scope.row.id, level2.id)"
+                    @close="handleClose(scope.row, level2.id)"
                     type="success"
                     closable>
                     {{ level2.authName }}
@@ -48,7 +48,7 @@
                 <el-col :span="20">
                   <!-- 三级权限 -->
                   <el-tag
-                    @close="handleClose(scope.row.id, level3.id)"
+                    @close="handleClose(scope.row, level3.id)"
                     class="level3"
                     v-for="level3 in level2.children"
                     :key="level3.id"
@@ -135,19 +135,24 @@ export default {
       }
     },
     // 点击 tag的删除按钮，删除当前角色对应的权限
-    async handleClose(roleId, rightId) {
+    async handleClose(role, rightId) {
+      // role 角色对象
       // roleId 角色id
       // rightId 权限id
-      const response = await this.$http.delete(`roles/${roleId}/rights/${rightId}`);
+      const response = await this.$http.delete(`roles/${role.id}/rights/${rightId}`);
 
-      console.log(response);
-      console.log(response.data);
+      // console.log(response);
+      // console.log(response.data);
       // 判断是否成功
       const { meta: { status, msg } } = response.data;
       if (status === 200) {
         this.$message.success(msg);
         // 重新加载数据
-        this.loadData();
+        // this.loadData();
+
+        // 重新加载当前角色所对应的权限列表
+        // scope.row.children = 
+        role.children = response.data.data;
       } else {
         this.$message.error(msg);
       }
