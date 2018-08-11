@@ -5,6 +5,7 @@ import Login from '@/views/Login';
 import Home from '@/views/Home';
 import Users from '@/views/users/Users';
 import Rights from '@/views/rights/Rights';
+import Roles from '@/views/rights/Roles';
 
 // @ 代表的是src的绝对路径
 // @ 是在build/webpack.base.conf.js
@@ -24,7 +25,8 @@ export default new Router({
       component: Home,
       children: [
         { name: 'users', path: '/users', component: Users },
-        { name: 'rights', path: '/rights', component: Rights }
+        { name: 'rights', path: '/rights', component: Rights },
+        { name: 'roles', path: '/roles', component: Roles }
       ]
     }
   ]
