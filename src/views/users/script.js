@@ -52,8 +52,8 @@ export default {
     // 1 发送请求，获取用户列表
     async loadData() {
       // 发送请求的时候，要在请求头中添加Authorization=token
-      var token = sessionStorage.getItem('token');
-      this.$http.defaults.headers.common['Authorization'] = token;
+      // var token = sessionStorage.getItem('token');
+      // this.$http.defaults.headers.common['Authorization'] = token;
 
       var response = await this.$http.get(`users?pagenum=${this.pagenum}&pagesize=${this.pagesize}&query=${this.searchValue}`);
 
