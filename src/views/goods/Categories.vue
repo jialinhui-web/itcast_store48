@@ -55,6 +55,7 @@
             plain>
           </el-button>
           <el-button
+            @click="handleDelete(scope.row.cat_id)"
             type="danger"
             icon="el-icon-delete"
             size="mini"
@@ -207,10 +208,13 @@ export default {
       this.form.cat_level = this.catIds.length;
       // 设置父id
       if (this.catIds.length === 0) {
+        // 添加一级分类，一级分类的pid=0
         this.form.cat_pid = 0;
       } else if (this.catIds.length === 1) {
+        // 添加二级分类，二级分类的pid是 它所对应的一级分类的id
         this.form.cat_pid = this.catIds[0];
       } else if (this.catIds.length === 2) {
+        // 添加三级分类，三级分类的pid是 它所对应的二级分类的id
         this.form.cat_pid = this.catIds[1];
       }
       // 发送请求
@@ -224,6 +228,23 @@ export default {
       } else {
         this.$message.error(msg);
       }
+    },
+    // 点击删除按钮
+    handleDelete(catId) {
+      // 删除提示
+      this.$confirm('是否要删除该分类?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 点击确定按钮
+        }).catch(() => {
+          // 点击取消按钮
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
     }
   }
 };
