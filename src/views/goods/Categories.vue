@@ -15,11 +15,20 @@
       border
       stripe
       style="width: 100%">
-      <el-table-column
+      <el-table-tree-column
+        prop="cat_name"
+        label="分类名称"
+        width="400"
+        treeKey="cat_id"
+        levelKey="cat_level"
+        childKey="children"
+        parentKey="cat_pid">
+      </el-table-tree-column>
+      <!-- <el-table-column
         prop="cat_name"
         label="分类名称"
         width="400">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         label="级别"
         width="180">
