@@ -236,8 +236,17 @@ export default {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
+        }).then(async () => {
           // 点击确定按钮
+          const response = await this.$http.delete(`categories/${catId}`);
+          // 判断是否删除成功
+          const { meta: { status, msg } } = response.data;
+          if (status === 200) {
+            this.$message.success(msg);
+            this.loadData();
+          } else {
+            this.$message.error(msg);
+          }
         }).catch(() => {
           // 点击取消按钮
           this.$message({
