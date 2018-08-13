@@ -5,7 +5,7 @@
     <!-- 添加按钮 -->
     <el-row class="row">
       <el-col :span="24">
-        <el-button @click="addDialogFormVisible=true" type="success" plain>添加分类</el-button>
+        <el-button @click="handleOpenAddDialog" type="success" plain>添加分类</el-button>
       </el-col>
     </el-row>
     <!-- 表格 -->
@@ -94,6 +94,8 @@
             props 设置下拉框中显示数据源中的哪个属性的值
            -->
           <el-cascader
+            placeholder="默认添加一级分类"
+            clearable
             change-on-select
             expand-trigger="hover"
             :options="options"
@@ -175,6 +177,12 @@ export default {
       this.pagenum = val;
       this.loadData();
       console.log(`当前页: ${val}`);
+    },
+    // 点击添加分类按钮的时候，显示添加分类对话框
+    async handleOpenAddDialog() {
+      this.addDialogFormVisible = true;
+      const response = await this.$http.get('categories?type=2');
+      this.options = response.data.data;
     }
   }
 };
