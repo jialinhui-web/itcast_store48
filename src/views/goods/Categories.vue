@@ -285,6 +285,22 @@ export default {
 
       // 打开对话框
       this.editDialogFormVisible = true;
+    },
+    // 编辑对话框中的确定按钮
+    async handleEdit() {
+      const response = await this.$http.put(`categories/${this.currentCatId}`, {
+        cat_name: this.form.cat_name
+      });
+
+      // 判断修改是否成功
+      const { meta: { status, msg } } = response.data;
+      if (status === 200) {
+        this.$message.success(msg);
+        this.editDialogFormVisible = false;
+        this.loadData();
+      } else {
+        this.$message.error(msg);
+      }
     }
   }
 };
