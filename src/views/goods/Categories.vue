@@ -166,7 +166,9 @@ export default {
       catIds: [],
       // 编辑的时候记录分类的id
       currentCatId: -1,
-      editDialogFormVisible: false
+      editDialogFormVisible: false,
+      // 点击编辑按钮的时候，存储当前行对应的分类对象
+      currentCat: null
     };
   },
   created() {
@@ -285,6 +287,9 @@ export default {
 
       // 打开对话框
       this.editDialogFormVisible = true;
+
+      // 存储分类对象
+      this.currentCat = cat;
     },
     // 编辑对话框中的确定按钮
     async handleEdit() {
@@ -297,7 +302,9 @@ export default {
       if (status === 200) {
         this.$message.success(msg);
         this.editDialogFormVisible = false;
-        this.loadData();
+        // this.loadData();
+        // 修改完毕后，只重新加载修改的数据
+        this.currentCat.cat_name = response.data.data.cat_name;
       } else {
         this.$message.error(msg);
       }
