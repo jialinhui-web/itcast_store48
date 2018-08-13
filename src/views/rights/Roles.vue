@@ -185,13 +185,13 @@ export default {
         // this.loadData();
 
         // 重新加载当前角色所对应的权限列表
-        // scope.row.children = 
+        // scope.row.children =
         role.children = response.data.data;
       } else {
         this.$message.error(msg);
       }
     },
-    // 点击分配权限的按钮，打开分配权限的对话框 
+    // 点击分配权限的按钮，打开分配权限的对话框
     async handleOpenSetRightsDialog(role) {
       // 记录roleId
       this.currentRoleId = role.id;
@@ -210,7 +210,7 @@ export default {
           level2.children.forEach((level3) => {
             this.checkedList.push(level3.id);
           });
-        })
+        });
       });
     },
     // 点击确定按钮，分配权限

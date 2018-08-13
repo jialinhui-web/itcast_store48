@@ -8,6 +8,33 @@
 </head>
 <body>
   <script>
+    // 展开数组
+    // var arr = ['abc', 'xxx', '123'];
+    // console.log(arr);
+    // console.log(...arr);
+    // console.log('abc', 'xxx', '123');
+
+    // 展开对象
+    var obj = {
+      name: 'zs',
+      age: 18,
+      sex: 'nan'
+    };
+
+    // var obj1 = {
+    //   salary: 1000000,
+    //   ...obj
+    // };
+
+    // console.log(obj1);
+
+    // var obj1 = obj;
+    var obj1 = { ...obj };
+
+    console.log(obj === obj1);
+
+
+
     // 1 数组的解构
     // var arr = ['a11', 'b22', 'd33', 'e44'];
     // var [a, b, ...c] = arr;

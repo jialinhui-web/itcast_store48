@@ -231,7 +231,7 @@ export default {
     // 实现分配角色
     async handleSetRole() {
       const response = await this.$http.put(`users/${this.currentUserId}/role`, {
-        rid: this.currentRoleId 
+        rid: this.currentRoleId
       });
 
       // 判断成功还是失败
