@@ -6,6 +6,7 @@ import Home from '@/views/Home';
 import Users from '@/views/users/Users';
 import Rights from '@/views/rights/Rights';
 import Roles from '@/views/rights/Roles';
+import Categories from '@/views/goods/Categories';
 
 // 导入message
 import { Message } from 'element-ui';
@@ -29,7 +30,8 @@ const router = new Router({
       children: [
         { name: 'users', path: '/users', component: Users },
         { name: 'rights', path: '/rights', component: Rights },
-        { name: 'roles', path: '/roles', component: Roles }
+        { name: 'roles', path: '/roles', component: Roles },
+        { name: 'categories', path: '/categories', component: Categories }
       ]
     }
   ]
