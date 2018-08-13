@@ -69,7 +69,13 @@
 </template>
 
 <script>
+// 加载treegrid组件  - 局部组件
+import ElementTreegrid from 'element-tree-grid';
+
 export default {
+  components: {
+    'el-table-tree-column': ElementTreegrid
+  },
   data() {
     return {
       data: [],
