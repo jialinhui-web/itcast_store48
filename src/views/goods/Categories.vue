@@ -5,7 +5,7 @@
     <!-- 添加按钮 -->
     <el-row class="row">
       <el-col :span="24">
-        <el-button type="success" plain>添加分类</el-button>
+        <el-button @click="addDialogFormVisible=true" type="success" plain>添加分类</el-button>
       </el-col>
     </el-row>
     <!-- 表格 -->
@@ -74,6 +74,39 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
+
+    <!-- 添加分类的对话框 -->
+    <el-dialog
+      title="添加商品分类"
+      :visible.sync="addDialogFormVisible">
+      <el-form
+        :model="form"
+        label-width="100px">
+        <el-form-item label="分类名称">
+          <el-input v-model="form.cat_name" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="分类列表">
+          <!-- 
+            expand-trigger="hover"  鼠标悬停的时候触发
+            options 绑定的数据
+            v-model 双向绑定
+            change-on-select  运行用户选择任意一级选项
+            props 设置下拉框中显示数据源中的哪个属性的值
+           -->
+          <el-cascader
+            change-on-select
+            expand-trigger="hover"
+            :options="options"
+            :props="defaultProps"
+            v-model="catIds">
+          </el-cascader>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addDialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addDialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -93,7 +126,22 @@ export default {
       pagesize: 6,
       // 总共有多少条数据
       total: 0,
-      loading: true
+      loading: true,
+      // 添加商品分类需要的数据
+      addDialogFormVisible: false,
+      form: {
+        cat_pid: -1,
+        cat_name: '',
+        cat_level: 0
+      },
+      // 绑定多级选择器使用的数据
+      options: [],
+      defaultProps: {
+        value: 'cat_id',
+        label: 'cat_name',
+        children: 'children'
+      },
+      catIds: []
     };
   },
   created() {
