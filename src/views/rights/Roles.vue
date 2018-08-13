@@ -247,10 +247,6 @@ export default {
 </script>
 
 <style>
-.card {
-  height: 100%;
-  overflow: auto;
-}
 .add-row {
   margin-top: 10px;
   margin-bottom: 10px;

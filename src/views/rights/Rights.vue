@@ -73,8 +73,5 @@ export default {
 </script>
 
 <style>
-.card {
-  height: 100%;
-  overflow: auto;
-}
+
 </style>
