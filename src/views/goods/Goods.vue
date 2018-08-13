@@ -19,6 +19,7 @@
     </el-row>
     <!-- 表格 -->
     <el-table
+      height="500px"
       border
       stripe
       :data="data"
@@ -68,6 +69,17 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 分页 -->
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pagenum"
+      :page-sizes="[6, 20, 30, 40]"
+      :page-size="pagesize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
   </el-card>
 </template>
 
@@ -75,7 +87,10 @@
 export default {
   data() {
     return {
-      data: []
+      data: [],
+      pagenum: 1,
+      pagesize: 6,
+      total: 0
     };
   },
   created() {
@@ -84,14 +99,27 @@ export default {
   methods: {
     // 获取商品列表
     async loadData() {
-      const response = await this.$http.get('goods?pagenum=1&pagesize=10');
+      const response = await this.$http.get(`goods?pagenum=${this.pagenum}&pagesize=${this.pagesize}`);
       // 获取数据是否成功
       const { meta: { status, msg } } = response.data;
       if (status === 200) {
         this.data = response.data.data.goods;
+        // 获取总共多少条数据
+        this.total = response.data.data.total;
       } else {
         this.$message.error(msg);
       }
+    },
+    // 分页方法
+    handleSizeChange(val) {
+      this.pagesize = val;
+      this.loadData();
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      this.pagenum = val;
+      this.loadData();
+      console.log(`当前页: ${val}`);
     }
   }
 };
@@ -102,4 +130,9 @@ export default {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+/* .cell {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+} */
 </style>
