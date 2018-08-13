@@ -88,7 +88,7 @@
           <el-input v-model="form.cat_name" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="分类列表">
-          <!-- 
+          <!--
             expand-trigger="hover"  鼠标悬停的时候触发
             options 绑定的数据
             v-model 双向绑定 -- 绑定的是数组
@@ -256,27 +256,27 @@ export default {
     handleDelete(catId) {
       // 删除提示
       this.$confirm('是否要删除该分类?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
-          // 点击确定按钮
-          const response = await this.$http.delete(`categories/${catId}`);
-          // 判断是否删除成功
-          const { meta: { status, msg } } = response.data;
-          if (status === 200) {
-            this.$message.success(msg);
-            this.loadData();
-          } else {
-            this.$message.error(msg);
-          }
-        }).catch(() => {
-          // 点击取消按钮
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        // 点击确定按钮
+        const response = await this.$http.delete(`categories/${catId}`);
+        // 判断是否删除成功
+        const { meta: { status, msg } } = response.data;
+        if (status === 200) {
+          this.$message.success(msg);
+          this.loadData();
+        } else {
+          this.$message.error(msg);
+        }
+      }).catch(() => {
+        // 点击取消按钮
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
         });
+      });
     },
     // 点击编辑按钮的时候，弹出编辑对话框
     // 存储 分类的id，分类的名称

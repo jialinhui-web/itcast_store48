@@ -20,7 +20,7 @@
     </el-row>
     <!-- 表格 -->
     <el-table
-      height="500px"
+      height="530px"
       border
       stripe
       :data="data"
@@ -76,7 +76,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="pagenum"
-      :page-sizes="[6, 20, 30, 40]"
+      :page-sizes="[9, 20, 30, 40]"
       :page-size="pagesize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
@@ -90,7 +90,7 @@ export default {
     return {
       data: [],
       pagenum: 1,
-      pagesize: 6,
+      pagesize: 9,
       total: 0
     };
   },
@@ -131,9 +131,9 @@ export default {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-/* .cell {
+.el-table .cell {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-} */
+}
 </style>
