@@ -89,10 +89,11 @@
           <!-- 
             expand-trigger="hover"  鼠标悬停的时候触发
             options 绑定的数据
-            v-model 双向绑定
+            v-model 双向绑定 -- 绑定的是数组
             change-on-select  运行用户选择任意一级选项
             props 设置下拉框中显示数据源中的哪个属性的值
            -->
+          <!-- {{ catIds }} -->
           <el-cascader
             placeholder="默认添加一级分类"
             clearable
@@ -106,7 +107,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="addDialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addDialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="handleAdd">确 定</el-button>
       </div>
     </el-dialog>
   </el-card>
@@ -183,6 +184,46 @@ export default {
       this.addDialogFormVisible = true;
       const response = await this.$http.get('categories?type=2');
       this.options = response.data.data;
+    },
+    // 点击添加对话框中的确认按钮，实现添加分类
+    async handleAdd() {
+      // cat_name 绑定的文本框
+
+      // cat_level  级别
+      // 一级分类  0
+      // 二级分类  1
+      // 三级分类  2
+
+      // cat_pid  添加的分类的，父节点的id
+      // 父id   当是一级分类   0
+      // 父id   当是二级分类
+
+      // this.catIds 绑定的多级选择器的值，是一个数组
+      // this.catIds.length === 0  要添加的分类是一级分类
+      // this.catIds.length === 1  要添加的分类是二级分类
+      // this.catIds.length === 2  要添加的分类是三级分类
+
+      // 设置级别
+      this.form.cat_level = this.catIds.length;
+      // 设置父id
+      if (this.catIds.length === 0) {
+        this.form.cat_pid = 0;
+      } else if (this.catIds.length === 1) {
+        this.form.cat_pid = this.catIds[0];
+      } else if (this.catIds.length === 2) {
+        this.form.cat_pid = this.catIds[1];
+      }
+      // 发送请求
+      const response = await this.$http.post('categories', this.form);
+      // 判断是否添加成功
+      const { meta: { status, msg } } = response.data;
+      if (status === 201) {
+        this.addDialogFormVisible = false;
+        this.loadData();
+        this.$message.success(msg);
+      } else {
+        this.$message.error(msg);
+      }
     }
   }
 };
