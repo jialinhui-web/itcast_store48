@@ -10,6 +10,7 @@
     </el-row>
     <!-- 表格 -->
     <el-table
+      v-loading="loading"
       :data="data"
       border
       stripe
@@ -76,7 +77,8 @@ export default {
       pagenum: 1,
       pagesize: 6,
       // 总共有多少条数据
-      total: 0
+      total: 0,
+      loading: true
     };
   },
   created() {
@@ -85,7 +87,11 @@ export default {
   methods: {
     // 组件创建完毕，加载分类数据 3层的
     async loadData() {
+      this.loading = true;
+
       const response = await this.$http.get(`categories?type=3&pagenum=${this.pagenum}&pagesize=${this.pagesize}`);
+
+      this.loading = false;
 
       // 判断请求是否成功
       const { meta: { status, msg } } = response.data;
