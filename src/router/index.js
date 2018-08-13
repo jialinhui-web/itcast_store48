@@ -16,7 +16,8 @@ import Roles from '@/views/rights/Roles';
 
 Vue.use(Router);
 
-export default new Router({
+
+const router = new Router({
   routes: [
     { name: 'Login', path: '/login', component: Login },
     {
@@ -31,3 +32,12 @@ export default new Router({
     }
   ]
 });
+
+// 路由的全局前置守卫 （拦截器）  -- 路由跳转之前执行
+router.beforeEach((to, from, next) => {
+  console.log(to);
+  console.log(from);
+  next();
+});
+
+export default router;
