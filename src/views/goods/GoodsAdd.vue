@@ -65,13 +65,15 @@
             v-for="item in dynamicParams"
             :key="item.attr_id"
             :label="item.attr_name">
-            <el-checkbox
-              checked
-              v-for="param in item.params"
-              :key="param"
-              border
-              :label="param">
-            </el-checkbox>
+            {{ item.params }}
+            <el-checkbox-group v-model="item.params">
+              <el-checkbox
+                v-for="param in item.params"
+                :key="param"
+                border
+                :label="param">
+              </el-checkbox>
+            </el-checkbox-group>
           </el-form-item>
         </el-tab-pane>
         <el-tab-pane label="商品属性">
@@ -156,7 +158,12 @@ export default {
         
         this.dynamicParams.map((item) => {
           // 给对象新加一个属性
-          item.params = item.attr_vals.length === 0 ? [] : item.attr_vals.split(',');
+
+          // 动态给对象增加的成员，无法做双向绑定
+          const arr = item.attr_vals.length === 0 ? [] : item.attr_vals.split(',');
+
+          this.$set(item, 'params', arr);
+
         });
         // this.dynamicParams --> [{attr_vals:'1,2', params: [1, 2]},{attr_vals:''},{attr_vals:''}]
         // console.log(this.dynamicParams);
