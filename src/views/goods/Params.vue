@@ -173,18 +173,37 @@ export default {
       }
     },
     // 点击关闭
-    handleClose(tag, param) {
+    async handleClose(tag, param) {
       // console.log(tag);
       // console.log(param);
       // tag 是标签里面显示的文字
       // param 是动态参数对象  param.params
+      // 分类的id     this.selectedOptions
+      // 参数的id     param.attr_id
+      // categories/:id/attributes/:attrid
+
+      // 删除成功，从界面上把元素删除
       const index = param.params.findIndex((item) => {
-        if (tag === item) {
+      if (tag === item) {
           return true;
         }
       });
       param.params.splice(index, 1);
-      console.log(param);
+
+      const response = await this.$http.put(`categories/${this.selectedOptions[2]}/attributes/${param.attr_id}`, {
+        'attr_vals': param.params.join(','),
+        'attr_sel': this.activeName,
+        'attr_name': param.attr_name
+      });
+
+      // 判断成功还是失败
+      const { meta: { status, msg } } = response.data;
+      if (status === 200) {
+        this.$message.success(msg);
+        
+      } else {
+        this.$message.error(msg);
+      }
     }
   }
 };
