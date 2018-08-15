@@ -81,6 +81,14 @@ export default {
       // console.log(tab);
       // console.log(event);
       this.active = tab.index - 0;
+
+      // 判断当前点击的tab是否是 商品参数，商品属性
+      if (tab.index === '1' || tab.index === '2') {
+        // 判断基本信息中的多级下拉是否选中了3级分类
+        if (this.selectedOptions.length !== 3) {
+          this.$message.warning('请先选择商品的分类');
+        }
+      }
     },
     // 多级下拉选中项变化的时候执行
     handleChange() {
