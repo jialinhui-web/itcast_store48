@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <input type="text" v-model="person.name"><br>
+    {{ person.name }}
+
+    <hr>
+    <input type="text" v-model="person.age"><br>
+    {{ person.age }}
+  </div>
+  <script src="./node_modules/vue/dist/vue.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      created() {
+        // 动态增加的成员，vue没有监视该成员
+        // this.person.age = 18;
+
+        this.$set(this.person, 'age', 18);
+        // 不要使用this.$set直接给root 的data增加成员。不要给Vue实例增加成员
+      },
+      data: {
+        person: {
+          name: 'zs'
+        }
+      }
+    });
+  </script>
+</body>
+</html>

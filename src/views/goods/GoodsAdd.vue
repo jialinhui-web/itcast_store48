@@ -97,14 +97,26 @@
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
         </el-tab-pane>
-        <el-tab-pane label="商品内容">商品内容</el-tab-pane>
+        <el-tab-pane label="商品内容">
+          <el-button @click="handleAdd">添加商品</el-button>
+          <quill-editor v-model="form.goods_introduce"></quill-editor>
+        </el-tab-pane>
       </el-tabs>
     </el-form>
   </el-card>
 </template>
 
 <script>
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
+
+import { quillEditor } from 'vue-quill-editor';
+
 export default {
+  components: {
+    quillEditor
+  },
   created() {
     // 加载商品分类
     this.loadOptions();
@@ -158,12 +170,10 @@ export default {
         
         this.dynamicParams.map((item) => {
           // 给对象新加一个属性
-
           // 动态给对象增加的成员，无法做双向绑定
           const arr = item.attr_vals.length === 0 ? [] : item.attr_vals.split(',');
 
           this.$set(item, 'params', arr);
-
         });
         // this.dynamicParams --> [{attr_vals:'1,2', params: [1, 2]},{attr_vals:''},{attr_vals:''}]
         // console.log(this.dynamicParams);
@@ -174,13 +184,60 @@ export default {
     },
     // 图片上传的方法
     handleRemove(file, fileList) {
-      console.log(file);
-      console.log(fileList);
+      // file.response.tmp_path
+      // console.log(file);
+      // console.log(fileList);
+      // 从数组中删除数据，要知道，删除项的索引是多少？
+      const index = this.form.pics.findIndex((item) => {
+        if (item.pic === file.response.data.tmp_path) {
+          return true;
+        }
+      });
+      this.form.pics.splice(index, 1);
+      console.log(this.form.pics);
     },
     handleSuccess(response, file, fileList) {
       console.log(response);
-      console.log(file);
-      console.log(fileList);
+      // console.log(file);
+      // console.log(fileList);
+      // 图片上传成功，在pics中记录当前图片的临时路径
+      if (response.meta.status === 200) {
+        this.form.pics.push({
+          pic: response.data.tmp_path
+        });
+
+        console.log(this.form.pics);
+      } else {
+        this.$message.error('图片上传失败');
+      }
+    },
+    // 添加商品
+    async handleAdd() {
+      // goods_cat
+      this.form.goods_cat = this.selectedOptions.join(',');
+      // attrs
+      // console.log(this.dynamicParams);
+      // console.log(this.staticParams);
+
+      // 基于dynamicParams数组生成一个新的数组
+      const arr1 = this.dynamicParams.map((item) => {
+        return { 'attr_id': item.attr_id, 'attr_value': item.params.join(',') };
+      });
+      // 基于staticParams数组生成一个新的数组
+      const arr2 = this.staticParams.map((item) => {
+        return { 'attr_id': item.attr_id, 'attr_value': item.attr_vals };
+      });
+      this.form.attrs = [...arr1, ...arr2];
+
+      const response = await this.$http.post('goods', this.form);
+      // 添加是否成功
+      const { meta: { status, msg } } = response.data;
+      if (status === 201) {
+        this.$message.success(msg);
+        this.$router.push('/goods');
+      } else {
+        this.$message.error(msg);
+      }
     }
   },
   data() {
@@ -194,7 +251,10 @@ export default {
         goods_cat: '',
         goods_price: '',
         goods_number: '',
-        goods_weight: ''
+        goods_weight: '',
+        pics: [],
+        goods_introduce: '',
+        attrs: []
       },
       // 多级选择器绑定的数据
       options: [],
@@ -219,5 +279,8 @@ export default {
 }
 .el-step__title {
   font-size: 12px;
+}
+.ql-editor {
+  height: 400px;
 }
 </style>
