@@ -24,8 +24,87 @@
     </el-row>
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="动态参数" name="many">动态参数</el-tab-pane>
-      <el-tab-pane label="静态参数" name="only">静态参数</el-tab-pane>
+      <el-tab-pane label="动态参数" name="many">
+        <el-button type="primary">添加动态参数</el-button>
+        <el-table
+          border
+          stripe
+          :data="data"
+          style="width: 100%">
+          <el-table-column
+            type="expand">
+            <template slot-scope="scope">
+              demo
+            </template>
+          </el-table-column>
+          <el-table-column
+            type="index"
+            width="60">
+          </el-table-column>
+          <el-table-column
+            prop="attr_name"
+            label="商品参数"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            label="操作">
+            <template slot-scope="scope">
+              <el-button
+                type="primary"
+                icon="el-icon-edit"
+                size="mini"
+                plain>
+              </el-button>
+              <el-button
+                type="danger"
+                icon="el-icon-delete"
+                size="mini"
+                plain>
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="静态参数" name="only">
+        <el-button type="primary">添加静态参数</el-button>
+        <el-table
+          border
+          stripe
+          :data="data"
+          style="width: 100%">
+          <el-table-column
+            type="index"
+            width="60">
+          </el-table-column>
+          <el-table-column
+            prop="attr_name"
+            label="属性名称"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="attr_vals"
+            label="属性值"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            label="操作">
+            <template slot-scope="scope">
+              <el-button
+                type="primary"
+                icon="el-icon-edit"
+                size="mini"
+                plain>
+              </el-button>
+              <el-button
+                type="danger"
+                icon="el-icon-delete"
+                size="mini"
+                plain>
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
     </el-tabs>
   </el-card>
 </template>
@@ -38,7 +117,8 @@ export default {
       options: [],
       selectedOptions: [],
       // tab绑定的数据
-      activeName: 'many'
+      activeName: 'many',
+      data: []
     };
   },
   methods: {
