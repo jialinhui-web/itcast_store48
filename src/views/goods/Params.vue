@@ -24,7 +24,7 @@
       </el-col>
     </el-row>
 
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName" @tab-click="handleTabClick">
       <el-tab-pane label="动态参数" name="many">
         <el-button :disabled="this.selectedOptions.length !== 3" type="primary">添加动态参数</el-button>
         <el-table
@@ -35,7 +35,14 @@
           <el-table-column
             type="expand">
             <template slot-scope="scope">
-              demo
+              <el-tag
+                :key="item"
+                v-for="item in scope.row.params"
+                closable
+                @close="handleClose(item, scope.row)">
+                {{ item }}
+              </el-tag>
+              
             </template>
           </el-table-column>
           <el-table-column
@@ -128,17 +135,65 @@ export default {
   methods: {
     // 多级下拉，选中内容改变之后
     handleChange() {
+      this.loadData();
+    },
+    // 点击tab栏的时候执行
+    handleTabClick() {
+      this.loadData();
     },
     // 加载多级下拉的数据
     async loadOptions() {
       const response = await this.$http.get('categories?type=3');
       this.options = response.data.data;
+    },
+    // 加载表格数据
+    async loadData() {
+      this.data.length = 0;
+      if (this.selectedOptions.length === 3) {
+        const response = await this.$http.get(`categories/${this.selectedOptions[2]}/attributes?sel=${this.activeName}`);
+
+        const { meta: { status, msg } } = response.data;
+
+        if (status === 200) {
+          this.data = response.data.data;
+
+          // 如果是动态参数的时候。要把attr_vals转换成数组
+          if (this.activeName === 'many') {
+            this.data.forEach((item) => {
+              // 动态给对象增加的成员。vue不会监视它的变化
+              // item.params = item.attr_vals.length === 0 ? [] : item.attr_vals.split(',');
+
+              const arr = item.attr_vals.length === 0 ? [] : item.attr_vals.split(',');
+              this.$set(item, 'params', arr);
+            });
+          }
+        } else {
+          this.$message.error(msg);
+        }
+      }
+    },
+    // 点击关闭
+    handleClose(tag, param) {
+      // console.log(tag);
+      // console.log(param);
+      // tag 是标签里面显示的文字
+      // param 是动态参数对象  param.params
+      const index = param.params.findIndex((item) => {
+        if (tag === item) {
+          return true;
+        }
+      });
+      param.params.splice(index, 1);
+      console.log(param);
     }
   }
 };
 </script>
 
 <style>
+.el-tag + .el-tag {
+  margin-left: 10px;
+}
 .alert {
   margin-bottom: 10px;
   margin-top: 10px;
