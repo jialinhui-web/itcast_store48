@@ -48,6 +48,7 @@
             <el-input v-model="form.goods_number"></el-input>
           </el-form-item>
           <el-form-item label="商品分类">
+            {{ selectedOptions }}
             <el-cascader
               placeholder="请选择商品分类"
               clearable
@@ -59,7 +60,13 @@
             </el-cascader>
           </el-form-item>
         </el-tab-pane>
-        <el-tab-pane label="商品参数">商品参数</el-tab-pane>
+        <el-tab-pane label="商品参数">
+          <el-form-item label="版式">
+            <el-checkbox-group>
+              <el-checkbox border label="复选框 A"></el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+        </el-tab-pane>
         <el-tab-pane label="商品属性">商品属性</el-tab-pane>
         <el-tab-pane label="商品图片">商品图片</el-tab-pane>
         <el-tab-pane label="商品内容">商品内容</el-tab-pane>
@@ -87,6 +94,9 @@ export default {
         // 判断基本信息中的多级下拉是否选中了3级分类
         if (this.selectedOptions.length !== 3) {
           this.$message.warning('请先选择商品的分类');
+        } else {
+          // 加载商品分类的参数列表
+          this.loadParams();
         }
       }
     },
@@ -94,7 +104,7 @@ export default {
     handleChange() {
       // 让多级下拉，只能选择3级分类
       if (this.selectedOptions.length !== 3) {
-        this.$message.warning('请选择3级分类')
+        this.$message.warning('请选择3级分类');
         // 清空多级下拉中的内容
         this.selectedOptions.length = 0;
       }
@@ -103,6 +113,15 @@ export default {
     async loadOptions() {
       const response = await this.$http.get('categories?type=3');
       this.options = response.data.data;
+    },
+    // 加载动态参数
+    async loadParams() {
+      // many 动态参数  only静态参数
+      const response = await this.$http.get(`categories/${this.selectedOptions[2]}/attributes?sel=many`);
+
+      this.dynamicParams = response.data.data;
+      // attr_vals: "4G,8G,16G"
+      console.log(this.dynamicParams);
     }
   },
   data() {
@@ -120,7 +139,11 @@ export default {
       },
       // 多级选择器绑定的数据
       options: [],
-      selectedOptions: []
+      selectedOptions: [],
+      // 动态参数
+      dynamicParams: [],
+      // 静态参数
+      staticParams: []
     };
   }
 };
