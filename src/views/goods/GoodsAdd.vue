@@ -48,7 +48,14 @@
             <el-input v-model="form.goods_number"></el-input>
           </el-form-item>
           <el-form-item label="商品分类">
-            <!-- <el-input v-model="form.name"></el-input> -->
+            <el-cascader
+              clearable
+              expand-trigger="hover"
+              :options="options"
+              :props="{ label: 'cat_name', value: 'cat_id', children: 'children' }"
+              v-model="selectedOptions"
+              @change="handleChange">
+            </el-cascader>
           </el-form-item>
         </el-tab-pane>
         <el-tab-pane label="商品参数">商品参数</el-tab-pane>
@@ -69,6 +76,10 @@ export default {
       // console.log(tab);
       // console.log(event);
       this.active = tab.index - 0;
+    },
+    // 多级下拉选中项变化的时候执行
+    handleChange() {
+
     }
   },
   data() {
@@ -83,7 +94,10 @@ export default {
         goods_price: '',
         goods_number: '',
         goods_weight: ''
-      }
+      },
+      // 多级选择器绑定的数据
+      options: [],
+      selectedOptions: []
     };
   }
 };
