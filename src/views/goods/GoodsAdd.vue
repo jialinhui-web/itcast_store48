@@ -74,7 +74,14 @@
             </el-checkbox>
           </el-form-item>
         </el-tab-pane>
-        <el-tab-pane label="商品属性">商品属性</el-tab-pane>
+        <el-tab-pane label="商品属性">
+          <el-form-item
+            v-for="item in staticParams"
+            :key="item.attr_id"
+            :label="item.attr_name">
+            <el-input v-model="item.attr_vals"></el-input>
+          </el-form-item>
+        </el-tab-pane>
         <el-tab-pane label="商品图片">商品图片</el-tab-pane>
         <el-tab-pane label="商品内容">商品内容</el-tab-pane>
       </el-tabs>
@@ -103,7 +110,7 @@ export default {
           this.$message.warning('请先选择商品的分类');
         } else {
           // 加载商品分类的参数列表
-          this.loadParams();
+          this.loadParams(tab.index);
         }
       }
     },
@@ -122,20 +129,29 @@ export default {
       this.options = response.data.data;
     },
     // 加载动态参数
-    async loadParams() {
+    // 加载静态参数
+    async loadParams(index) {
+      // 当index='1' 动态参数   index='2'静态参数
+      const sel = index === '1' ? 'many' : 'only';
+
       // many 动态参数  only静态参数
-      const response = await this.$http.get(`categories/${this.selectedOptions[2]}/attributes?sel=many`);
+      const response = await this.$http.get(`categories/${this.selectedOptions[2]}/attributes?sel=${sel}`);
 
-      this.dynamicParams = response.data.data;
-      // attr_vals: "4G,8G,16G"
-      
-      this.dynamicParams.map((item) => {
-        // 给对象新加一个属性
-        item.params = item.attr_vals.length === 0 ? [] : item.attr_vals.split(',');
-      });
-
-      // this.dynamicParams --> [{attr_vals:'1,2', params: [1, 2]},{attr_vals:''},{attr_vals:''}]
-      // console.log(this.dynamicParams);
+      // 判断是动参数
+      if (sel === 'many') {
+        this.dynamicParams = response.data.data;
+        // attr_vals: "4G,8G,16G"
+        
+        this.dynamicParams.map((item) => {
+          // 给对象新加一个属性
+          item.params = item.attr_vals.length === 0 ? [] : item.attr_vals.split(',');
+        });
+        // this.dynamicParams --> [{attr_vals:'1,2', params: [1, 2]},{attr_vals:''},{attr_vals:''}]
+        // console.log(this.dynamicParams);
+      } else if (sel === 'only') {
+        // 静态参数
+        this.staticParams = response.data.data;
+      }
     }
   },
   data() {
