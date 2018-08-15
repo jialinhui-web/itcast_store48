@@ -14,9 +14,10 @@
       <el-col :span="24">
         请选择商品分类：
         <el-cascader
+          placeholder="请选择商品分类"
           expand-trigger="hover"
           :options="options"
-          :props="{ label: 'attr_name', value: 'attr_id' }"
+          :props="{ label: 'cat_name', value: 'cat_id' }"
           v-model="selectedOptions"
           @change="handleChange">
         </el-cascader>
@@ -25,7 +26,7 @@
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="动态参数" name="many">
-        <el-button type="primary">添加动态参数</el-button>
+        <el-button :disabled="this.selectedOptions.length !== 3" type="primary">添加动态参数</el-button>
         <el-table
           border
           stripe
@@ -66,7 +67,7 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="静态参数" name="only">
-        <el-button type="primary">添加静态参数</el-button>
+        <el-button :disabled="this.selectedOptions.length !== 3" type="primary">添加静态参数</el-button>
         <el-table
           border
           stripe
@@ -121,9 +122,17 @@ export default {
       data: []
     };
   },
+  created() {
+    this.loadOptions();
+  },
   methods: {
     // 多级下拉，选中内容改变之后
     handleChange() {
+    },
+    // 加载多级下拉的数据
+    async loadOptions() {
+      const response = await this.$http.get('categories?type=3');
+      this.options = response.data.data;
     }
   }
 };
