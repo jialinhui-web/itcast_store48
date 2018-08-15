@@ -61,10 +61,17 @@
           </el-form-item>
         </el-tab-pane>
         <el-tab-pane label="商品参数">
-          <el-form-item label="版式">
-            <el-checkbox-group>
-              <el-checkbox border label="复选框 A"></el-checkbox>
-            </el-checkbox-group>
+          <el-form-item
+            v-for="item in dynamicParams"
+            :key="item.attr_id"
+            :label="item.attr_name">
+            <el-checkbox
+              checked
+              v-for="param in item.params"
+              :key="param"
+              border
+              :label="param">
+            </el-checkbox>
           </el-form-item>
         </el-tab-pane>
         <el-tab-pane label="商品属性">商品属性</el-tab-pane>
@@ -121,7 +128,14 @@ export default {
 
       this.dynamicParams = response.data.data;
       // attr_vals: "4G,8G,16G"
-      console.log(this.dynamicParams);
+      
+      this.dynamicParams.map((item) => {
+        // 给对象新加一个属性
+        item.params = item.attr_vals.length === 0 ? [] : item.attr_vals.split(',');
+      });
+
+      // this.dynamicParams --> [{attr_vals:'1,2', params: [1, 2]},{attr_vals:''},{attr_vals:''}]
+      // console.log(this.dynamicParams);
     }
   },
   data() {
