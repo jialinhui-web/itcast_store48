@@ -49,6 +49,7 @@
           </el-form-item>
           <el-form-item label="商品分类">
             <el-cascader
+              placeholder="请选择商品分类"
               clearable
               expand-trigger="hover"
               :options="options"
@@ -69,6 +70,10 @@
 
 <script>
 export default {
+  created() {
+    // 加载商品分类
+    this.loadOptions();
+  },
   methods: {
     // 点击tab栏的tab项
     handleTabClick(tab, event) {
@@ -79,7 +84,17 @@ export default {
     },
     // 多级下拉选中项变化的时候执行
     handleChange() {
-
+      // 让多级下拉，只能选择3级分类
+      if (this.selectedOptions.length !== 3) {
+        this.$message.warning('请选择3级分类')
+        // 清空多级下拉中的内容
+        this.selectedOptions.length = 0;
+      }
+    },
+    // 加载多级下拉的数据
+    async loadOptions() {
+      const response = await this.$http.get('categories?type=3');
+      this.options = response.data.data;
     }
   },
   data() {
