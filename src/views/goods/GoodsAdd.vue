@@ -82,7 +82,19 @@
             <el-input v-model="item.attr_vals"></el-input>
           </el-form-item>
         </el-tab-pane>
-        <el-tab-pane label="商品图片">商品图片</el-tab-pane>
+        <el-tab-pane label="商品图片">
+          <!-- 
+            action  上传的地址，此处必须写上全部路径
+           -->
+          <el-upload
+            :headers="headers"
+            action="http://localhost:8888/api/private/v1/upload"
+            :on-remove="handleRemove"
+            :on-success="handleSuccess"
+            list-type="picture">
+            <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
+        </el-tab-pane>
         <el-tab-pane label="商品内容">商品内容</el-tab-pane>
       </el-tabs>
     </el-form>
@@ -152,6 +164,16 @@ export default {
         // 静态参数
         this.staticParams = response.data.data;
       }
+    },
+    // 图片上传的方法
+    handleRemove(file, fileList) {
+      console.log(file);
+      console.log(fileList);
+    },
+    handleSuccess(response, file, fileList) {
+      console.log(response);
+      console.log(file);
+      console.log(fileList);
     }
   },
   data() {
@@ -173,7 +195,11 @@ export default {
       // 动态参数
       dynamicParams: [],
       // 静态参数
-      staticParams: []
+      staticParams: [],
+      // 绑定上传组件
+      headers: {
+        'Authorization': sessionStorage.getItem('token')
+      }
     };
   }
 };
