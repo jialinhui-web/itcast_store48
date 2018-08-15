@@ -9,6 +9,7 @@ import Roles from '@/views/rights/Roles';
 import Categories from '@/views/goods/Categories';
 import Goods from '@/views/goods/Goods';
 import GoodsAdd from '@/views/goods/GoodsAdd';
+import Params from '@/views/goods/Params';
 
 // 导入message
 import { Message } from 'element-ui';
@@ -35,7 +36,8 @@ const router = new Router({
         { name: 'roles', path: '/roles', component: Roles },
         { name: 'categories', path: '/categories', component: Categories },
         { name: 'goods', path: '/goods', component: Goods },
-        { name: 'goodsadd', path: '/goods/add', component: GoodsAdd }
+        { name: 'goodsadd', path: '/goods/add', component: GoodsAdd },
+        { name: 'params', path: '/params', component: Params }
       ]
     }
   ]
