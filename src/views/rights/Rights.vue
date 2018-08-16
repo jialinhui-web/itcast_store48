@@ -61,12 +61,13 @@ export default {
       // 请求结束
       this.loading = false;
 
-      const { meta: { status, msg } } = response.data;
-      if (status === 200) {
-        this.data = response.data.data;
-      } else {
-        this.$message.error(msg);
-      }
+      this.data = response.data.data;
+      // const { meta: { status, msg } } = response.data;
+      // if (status === 200) {
+      //   this.data = response.data.data;
+      // } else {
+      //   this.$message.error(msg);
+      // }
     }
   }
 };

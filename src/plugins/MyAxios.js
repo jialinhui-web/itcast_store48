@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Message } from 'element-ui';
 const MyAxios = {};
 // 插件必须提供一个install方法
 MyAxios.install = function (Vue) {
@@ -30,6 +31,15 @@ MyAxios.install = function (Vue) {
   // Add a response interceptor
   // 响应的拦截器
   axios.interceptors.response.use(function (response) {
+    // console.log(response);
+
+    // 判断获取数据是否成功
+    const { meta: { status, msg } } = response.data;
+    if (status === 200 || status === 201) {
+    } else {
+      Message.error(msg);
+    }
+
     // Do something with response data
     return response;
   }, function (error) {

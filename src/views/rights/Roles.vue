@@ -161,12 +161,13 @@ export default {
       // 等请求结束，关闭loading
       this.loading = false;
 
-      const { meta: { status, msg } } = response.data;
-      if (status === 200) {
-        this.data = response.data.data;
-      } else {
-        this.$message.error(msg);
-      }
+      this.data = response.data.data;
+      // const { meta: { status, msg } } = response.data;
+      // if (status === 200) {
+      //   this.data = response.data.data;
+      // } else {
+      //   this.$message.error(msg);
+      // }
     },
     // 点击 tag的删除按钮，删除当前角色对应的权限
     async handleClose(role, rightId) {
@@ -231,16 +232,22 @@ export default {
         rids: arr.join(',')
       });
 
+
+      this.$message.success(msg);
+      this.setRightsDialogVisible = false;
+      // 重新加载数据
+      this.loadData();
       // 判断是否成功
-      const { meta: { status, msg } } = response.data;
-      if (status === 200) {
-        this.$message.success(msg);
-        this.setRightsDialogVisible = false;
-        // 重新加载数据
-        this.loadData();
-      } else {
-        this.$message.error(msg);
-      }
+
+      // const { meta: { status, msg } } = response.data;
+      // if (status === 200) {
+      //   this.$message.success(msg);
+      //   this.setRightsDialogVisible = false;
+      //   // 重新加载数据
+      //   this.loadData();
+      // } else {
+      //   this.$message.error(msg);
+      // }
     }
   }
 };
