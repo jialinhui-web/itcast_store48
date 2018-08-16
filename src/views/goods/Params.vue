@@ -245,6 +245,7 @@ export default {
     },
     showInput() {
       this.inputVisible = true;
+      // 等着下一次dom更新操作结束，才能获取到文本框
       this.$nextTick(_ => {
         this.$refs.saveTagInput.$refs.input.focus();
       });

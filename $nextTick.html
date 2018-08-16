@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <button @click="handleClick">按钮</button>
+    <br>
+    <input ref="input" type="text" v-model="inputValue">
+  </div>
+  <script src="./node_modules/vue/dist/vue.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        inputValue: 'hello'
+      },
+      methods: {
+        handleClick() {
+          this.inputValue = '我点击了按钮';
+          // 通过dom的方式获取文本框的值
+          // 等待dom更新循环结束以后，再获取文本框的值
+          // this.$nextTick(() => {
+          //   console.log(this.$refs.input.value);
+          // });
+
+          setTimeout(() => {
+            console.log(this.$refs.input.value);
+          }, 0);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
