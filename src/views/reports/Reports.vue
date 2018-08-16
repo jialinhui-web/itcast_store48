@@ -22,7 +22,7 @@ export default {
         title: {
           text: '用户来源'
         },
-        tooltip : {
+        tooltip: {
           trigger: 'axis',
           axisPointer: {
             type: 'cross',
@@ -44,7 +44,7 @@ export default {
 
       // 初始化echarts
       const myChart = echarts.init(this.$refs.chart);
-      
+
       myChart.setOption(option);
     }
   }
