@@ -93,6 +93,8 @@
 </template>
 
 <script>
+import citydata from './city_data2017_element';
+
 export default {
   data() {
     return {
@@ -135,6 +137,7 @@ export default {
     openDialog() {
       this.dialogFormVisible = true;
       // 加载多级下拉的数据
+      this.options = citydata;
     }
   }
 };
