@@ -1,17 +1,17 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 // 导入组件，所有的import 都应该在文件最上面
-import Login from '@/views/Login';
-import Home from '@/views/Home';
-import Users from '@/views/users/Users';
-import Rights from '@/views/rights/Rights';
-import Roles from '@/views/rights/Roles';
-import Categories from '@/views/goods/Categories';
-import Goods from '@/views/goods/Goods';
-import GoodsAdd from '@/views/goods/GoodsAdd';
-import Params from '@/views/goods/Params';
-import Orders from '@/views/orders/Orders';
-import Reports from '@/views/reports/Reports';
+const Login = () => import('@/views/Login');
+const Home = () => import('@/views/Home');
+const Users = () => import('@/views/users/Users');
+const Rights = () => import('@/views/rights/Rights');
+const Roles = () => import('@/views/rights/Roles');
+const Categories = () => import('@/views/goods/Categories');
+const Goods = () => import('@/views/goods/Goods');
+const GoodsAdd = () => import('@/views/goods/GoodsAdd');
+const Params = () => import('@/views/goods/Params');
+const Orders = () => import('@/views/orders/Orders');
+const Reports = () => import('@/views/reports/Reports');
 
 // 导入message
 import { Message } from 'element-ui';
