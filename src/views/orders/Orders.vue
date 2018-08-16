@@ -11,29 +11,34 @@
         width="60">
       </el-table-column>
       <el-table-column
-        prop=""
+        prop="order_number"
         label="订单编号"
         width="250">
       </el-table-column>
       <el-table-column
-        prop=""
+        prop="order_price"
         label="订单价格"
         width="80">
       </el-table-column>
       <el-table-column
-        prop=""
         label="是否付款"
         width="80">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.order_pay === 1">付款</el-tag>
+          <el-tag v-else type="danger">未付款</el-tag>
+        </template>
       </el-table-column>
       <el-table-column
-        prop=""
+        prop="is_send"
         label="是否发货"
         width="80">
       </el-table-column>
       <el-table-column
-        prop=""
         label="下单时间"
         width="180">
+        <template slot-scope="scope">
+          {{ scope.create_time | fmtDate('YYYY-MM-DD') }}
+        </template>
       </el-table-column>
       <el-table-column
         label="操作">
@@ -56,6 +61,20 @@ export default {
     return {
       data: []
     };
+  },
+  created() {
+    this.loadData();
+  },
+  methods: {
+    async loadData() {
+      const response = await this.$http.get('orders?pagenum=1&pagesize=10');
+      const { meta: { status, msg } } = response.data;
+      if (status === 200) {
+        this.data = response.data.data.goods;
+      } else {
+        this.$message.error(msg);
+      }
+    }
   }
 };
 </script>
