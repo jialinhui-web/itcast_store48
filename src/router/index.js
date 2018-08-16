@@ -10,6 +10,7 @@ import Categories from '@/views/goods/Categories';
 import Goods from '@/views/goods/Goods';
 import GoodsAdd from '@/views/goods/GoodsAdd';
 import Params from '@/views/goods/Params';
+import Orders from '@/views/orders/Orders';
 
 // 导入message
 import { Message } from 'element-ui';
@@ -37,7 +38,8 @@ const router = new Router({
         { name: 'categories', path: '/categories', component: Categories },
         { name: 'goods', path: '/goods', component: Goods },
         { name: 'goodsadd', path: '/goods/add', component: GoodsAdd },
-        { name: 'params', path: '/params', component: Params }
+        { name: 'params', path: '/params', component: Params },
+        { name: 'orders', path: '/orders', component: Orders }
       ]
     }
   ]
