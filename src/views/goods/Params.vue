@@ -42,7 +42,7 @@
                 @close="handleClose(item, scope.row)">
                 {{ item }}
               </el-tag>
-              
+
             </template>
           </el-table-column>
           <el-table-column
@@ -184,7 +184,7 @@ export default {
 
       // 删除成功，从界面上把元素删除
       const index = param.params.findIndex((item) => {
-      if (tag === item) {
+        if (tag === item) {
           return true;
         }
       });
@@ -200,7 +200,6 @@ export default {
       const { meta: { status, msg } } = response.data;
       if (status === 200) {
         this.$message.success(msg);
-        
       } else {
         this.$message.error(msg);
       }

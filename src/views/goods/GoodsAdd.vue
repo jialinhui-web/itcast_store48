@@ -85,7 +85,7 @@
           </el-form-item>
         </el-tab-pane>
         <el-tab-pane label="商品图片">
-          <!-- 
+          <!--
             action  上传的地址，此处必须写上全部路径
            -->
           <el-upload
@@ -167,7 +167,7 @@ export default {
       if (sel === 'many') {
         this.dynamicParams = response.data.data;
         // attr_vals: "4G,8G,16G"
-        
+
         this.dynamicParams.map((item) => {
           // 给对象新加一个属性
           // 动态给对象增加的成员，无法做双向绑定
