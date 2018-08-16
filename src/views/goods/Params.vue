@@ -42,7 +42,17 @@
                 @close="handleClose(item, scope.row)">
                 {{ item }}
               </el-tag>
-
+              <el-input
+                class="input-new-tag"
+                v-if="inputVisible"
+                v-model="inputValue"
+                ref="saveTagInput"
+                size="small"
+                @keyup.enter.native="handleInputConfirm(scope.row)"
+                @blur="handleInputConfirm(scope.row)"
+              >
+              </el-input>
+              <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
             </template>
           </el-table-column>
           <el-table-column
@@ -126,7 +136,10 @@ export default {
       selectedOptions: [],
       // tab绑定的数据
       activeName: 'many',
-      data: []
+      data: [],
+      // 添加动态参数，绑定的数据
+      inputVisible: false,
+      inputValue: ''
     };
   },
   created() {
@@ -203,6 +216,26 @@ export default {
       } else {
         this.$message.error(msg);
       }
+    },
+    // 添加动态参数
+    handleInputConfirm(row) {
+      let inputValue = this.inputValue;
+      if (!inputValue) {
+        return;
+      }
+
+      row.params.push(inputValue);
+      // 向服务器发送请求
+      
+
+      this.inputVisible = false;
+      this.inputValue = '';
+    },
+    showInput() {
+      this.inputVisible = true;
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus();
+      });
     }
   }
 };
@@ -211,6 +244,18 @@ export default {
 <style>
 .el-tag + .el-tag {
   margin-left: 10px;
+}
+.button-new-tag {
+  margin-left: 10px;
+  height: 32px;
+  line-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.input-new-tag {
+  width: 90px;
+  margin-left: 10px;
+  vertical-align: bottom;
 }
 .alert {
   margin-bottom: 10px;

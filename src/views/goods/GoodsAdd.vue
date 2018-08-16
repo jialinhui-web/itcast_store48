@@ -172,7 +172,7 @@ export default {
           // 给对象新加一个属性
           // 动态给对象增加的成员，无法做双向绑定
           const arr = item.attr_vals.length === 0 ? [] : item.attr_vals.split(',');
-
+          
           this.$set(item, 'params', arr);
         });
         // this.dynamicParams --> [{attr_vals:'1,2', params: [1, 2]},{attr_vals:''},{attr_vals:''}]
