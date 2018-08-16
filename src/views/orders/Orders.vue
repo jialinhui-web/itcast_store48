@@ -24,7 +24,8 @@
         label="是否付款"
         width="80">
         <template slot-scope="scope">
-          <el-tag v-if="scope.order_pay === 1">付款</el-tag>
+          <!-- {{ scope.order_pay + '----' }} -->
+          <el-tag v-if="scope.row.order_pay === 1">付款</el-tag>
           <el-tag v-else type="danger">未付款</el-tag>
         </template>
       </el-table-column>
@@ -37,7 +38,7 @@
         label="下单时间"
         width="180">
         <template slot-scope="scope">
-          {{ scope.create_time | fmtDate('YYYY-MM-DD') }}
+          {{ scope.row.create_time | fmtDate('YYYY-MM-DD') }}
         </template>
       </el-table-column>
       <el-table-column
@@ -52,6 +53,17 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 分页 -->
+     <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pagenum"
+      :page-sizes="[10, 20, 30, 40]"
+      :page-size="pagesize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
   </el-card>
 </template>
 
@@ -59,7 +71,10 @@
 export default {
   data() {
     return {
-      data: []
+      data: [],
+      pagenum: 1,
+      pagesize: 10,
+      total: 0
     };
   },
   created() {
@@ -67,13 +82,24 @@ export default {
   },
   methods: {
     async loadData() {
-      const response = await this.$http.get('orders?pagenum=1&pagesize=10');
+      const response = await this.$http.get(`orders?pagenum=${this.pagenum}&pagesize=${this.pagesize}`);
       const { meta: { status, msg } } = response.data;
       if (status === 200) {
+        this.total = response.data.data.total;
         this.data = response.data.data.goods;
       } else {
         this.$message.error(msg);
       }
+    },
+    handleSizeChange(val) {
+      this.pagesize = val;
+      this.loadData();
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      this.pagenum = val;
+      this.loadData();
+      console.log(`当前页: ${val}`);
     }
   }
 };
