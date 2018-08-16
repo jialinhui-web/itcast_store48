@@ -218,7 +218,7 @@ export default {
       }
     },
     // 添加动态参数
-    handleInputConfirm(row) {
+    async handleInputConfirm(row) {
       let inputValue = this.inputValue;
       if (!inputValue) {
         return;
@@ -226,10 +226,22 @@ export default {
 
       row.params.push(inputValue);
       // 向服务器发送请求
-      
+      const response = await this.$http.put(`categories/${this.selectedOptions[2]}/attributes/${row.attr_id}`, {
+        attr_vals: row.params.join(','),
+        attr_name: row.attr_name,
+        attr_sel: this.activeName
+      });
 
-      this.inputVisible = false;
-      this.inputValue = '';
+      // 判断成功还是失败
+      const { meta: { status, msg } } = response.data;
+      if (status === 200) {
+        this.$message.success(msg);
+
+        this.inputVisible = false;
+        this.inputValue = '';
+      } else {
+        this.$message.error(msg);
+      }
     },
     showInput() {
       this.inputVisible = true;
