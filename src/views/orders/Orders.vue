@@ -45,6 +45,7 @@
         label="操作">
         <template slot-scope="scope">
           <el-button
+            @click="openDialog"
             type="primary"
             icon="el-icon-edit"
             size="mini"
@@ -64,6 +65,30 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
+
+    <!-- 对话框 -->
+    <el-dialog
+      title="修改订单地址"
+      :visible.sync="dialogFormVisible">
+      <el-form
+        label-width="100px"
+        :model="form">
+        <el-form-item label="省市区/县">
+          <el-cascader
+            expand-trigger="hover"
+            :options="options"
+            v-model="form.region">
+          </el-cascader>
+        </el-form-item>
+        <el-form-item label="详细地址">
+          <el-input v-model="form.address" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -74,7 +99,13 @@ export default {
       data: [],
       pagenum: 1,
       pagesize: 10,
-      total: 0
+      total: 0,
+      options: [],
+      form: {
+        address: '',
+        region: []
+      },
+      dialogFormVisible: false
     };
   },
   created() {
@@ -100,6 +131,10 @@ export default {
       this.pagenum = val;
       this.loadData();
       console.log(`当前页: ${val}`);
+    },
+    openDialog() {
+      this.dialogFormVisible = true;
+      // 加载多级下拉的数据
     }
   }
 };
