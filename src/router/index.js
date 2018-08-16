@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+// 导入message
+import { Message } from 'element-ui';
 // 导入组件，所有的import 都应该在文件最上面
 const Login = () => import('@/views/Login');
 const Home = () => import('@/views/Home');
@@ -12,9 +14,6 @@ const GoodsAdd = () => import('@/views/goods/GoodsAdd');
 const Params = () => import('@/views/goods/Params');
 const Orders = () => import('@/views/orders/Orders');
 const Reports = () => import('@/views/reports/Reports');
-
-// 导入message
-import { Message } from 'element-ui';
 
 // @ 代表的是src的绝对路径
 // @ 是在build/webpack.base.conf.js
