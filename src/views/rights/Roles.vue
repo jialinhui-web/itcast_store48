@@ -228,12 +228,11 @@ export default {
       const arr = [...checkedList, ...halfCheckedList];
 
       // 发送请求
-      const response = await this.$http.post(`roles/${this.currentRoleId}/rights`, {
+      await this.$http.post(`roles/${this.currentRoleId}/rights`, {
         rids: arr.join(',')
       });
 
-
-      this.$message.success(msg);
+      // this.$message.success(msg);
       this.setRightsDialogVisible = false;
       // 重新加载数据
       this.loadData();
