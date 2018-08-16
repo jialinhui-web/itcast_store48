@@ -11,6 +11,7 @@ import Goods from '@/views/goods/Goods';
 import GoodsAdd from '@/views/goods/GoodsAdd';
 import Params from '@/views/goods/Params';
 import Orders from '@/views/orders/Orders';
+import Reports from '@/views/reports/Reports';
 
 // 导入message
 import { Message } from 'element-ui';
@@ -39,7 +40,8 @@ const router = new Router({
         { name: 'goods', path: '/goods', component: Goods },
         { name: 'goodsadd', path: '/goods/add', component: GoodsAdd },
         { name: 'params', path: '/params', component: Params },
-        { name: 'orders', path: '/orders', component: Orders }
+        { name: 'orders', path: '/orders', component: Orders },
+        { name: 'reports', path: '/reports', component: Reports }
       ]
     }
   ]
