@@ -7,6 +7,7 @@
         <el-col :span="4">
           <img src="@/assets/logo.png" alt="">
         </el-col>
+
         <el-col :span="19">
           <div class="title">电商后台管理系统</div>
         </el-col>
